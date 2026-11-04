@@ -54,6 +54,19 @@ def test_parse_time_minute_not_numeric():
     with pytest.raises(ValueError):
         parse_time("14:cd")
 
+def test_parse_time_hour_missing():
+    with pytest.raises(ValueError):
+        parse_time(":21")
+
+
+def test_parse_time_minute_missing():
+    with pytest.raises(ValueError):
+        parse_time("14:")
+
+
+def test_parse_time_empty_text():
+    with pytest.raises(ValueError):
+        parse_time("")
 
 
 def test_parse_measurement_regular_line():
@@ -114,6 +127,21 @@ def test_parse_measurement_negative_temperature():
 def test_parse_measurement_no_plausibility_check():
     assert parse_measurement("Köln;14:21;100.0") == ("Köln", 861, 100.0)
     assert parse_measurement("Köln;14:21;-90.0") == ("Köln", 861, -90.0)
+    
+
+def test_parse_measurement_none():
+    with pytest.raises(ValueError):
+        parse_measurement(None)
+
+
+def test_parse_measurement_city_empty():
+    with pytest.raises(ValueError):
+        parse_measurement(";14:21;21.7")
+
+
+def test_parse_measurement_temperature_missing():
+    with pytest.raises(ValueError):
+        parse_measurement("Köln;14:21;")
 
 
 
